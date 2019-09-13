@@ -20,7 +20,7 @@ export default {
           return '%a';
         // 3 months.
         case span < 3 * 30:
-          return '%m/%d';
+          return '%d/%m';
         default:
           return '%b';
       }

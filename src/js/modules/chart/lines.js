@@ -54,7 +54,7 @@ export default {
     // Make sure off days are numbers.
     const off_days = _.map(config.chart.off_days, (n) => parseInt(n, 10));
 
-    a = moment(a, moment.ISO_8601);
+    a = moment(a, moment.ISO_8601).subtract(1, 'day');
     // Do we have a due date?
     b = (b != null) ? moment(b, moment.ISO_8601) : moment.utc();
 
@@ -93,7 +93,7 @@ export default {
     if ((now = moment.utc()) > b) {
       days.push({ 'date': now.toJSON(), 'points': 0 });
     }
-
+    
     return days;
   },
 

@@ -22,6 +22,8 @@ export default class Chart extends React.Component {
   componentDidMount() {
     let { data } = this.props;
 
+    console.log({data});
+
     // Skip charts that have nothing to show.
     if (data.stats.isEmpty) return;
 
@@ -48,10 +50,12 @@ export default class Chart extends React.Component {
     let ideal = lines.ideal(data.created_at, data.due_on, total);
     let trend = lines.trend(actual, data.created_at, data.due_on);
 
+    console.log(data.created_at, ideal);
+
     // Get available space.
     let { height, width } = this.refs.el.getBoundingClientRect();
 
-    let margin = { 'top': 30, 'right': 30, 'bottom': 40, 'left': 50 };
+    let margin = { 'top': 30, 'right': 30, 'bottom': 30, 'left': 50 };
     width -= margin.left + margin.right;
     height -= margin.top + margin.bottom;
 
@@ -70,8 +74,8 @@ export default class Chart extends React.Component {
     .y((d) => y(d.points));
 
     // Get the minimum and maximum date, and initial points.
-    let first = ideal[0], last = ideal[ideal.length - 1];
-    x.domain([ new Date(first.date), new Date(last.date) ]);
+    let first = ideal[0], last = ideal[ideal.length - 2];
+    x.domain([ new Date(first.date), new Date(last.date) ]).nice();
     y.domain([ 0, first.points ]).nice();
 
     // Add an SVG element with the desired dimensions and margin.
@@ -153,7 +157,7 @@ export default class Chart extends React.Component {
     .append('svg:circle')
     .attr("cx", ({ date }) => x(new Date(date)))
     .attr("cy", ({ points }) => y(points))
-    .attr("r", ({ radius }) => 5)
+    .attr("r", ({ radius }) => 6)
     .on('mouseover', function(d, i) {
       tooltip.show(d, this);
     })
